@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "MathMart Shopping App", // Sets the browser tab title
+      title: "MATHMART SHOPPING APPLICATION", // Sets the browser tab title
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
@@ -49,12 +49,14 @@ class MenuScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.teal, // AppBar background color
-          title: const Text("MathMart Shopping App"),
+          title: const Text("MATHMART SHOPPING APP",style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
           centerTitle: true,
-          bottom: const TabBar(labelColor: Colors.blue, tabs: [
-            Tab(icon: Icon(Icons.home), text: "Home"),
-            Tab(icon: Icon(Icons.list), text: "Catalog"),
-            Tab(icon: Icon(Icons.shopping_cart), text: "Shopping Cart"),
+          bottom: const TabBar(labelColor: Colors.blue,
+              labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), // Selected tab text style
+              tabs: [
+            Tab(icon: Icon(Icons.home, size: 40), text: "Home"),
+            Tab(icon: Icon(Icons.list, size: 40), text: "Catalog"),
+            Tab(icon: Icon(Icons.shopping_cart, size: 40), text: "Shopping Cart"),
           ]),
         ),
         body: Container(

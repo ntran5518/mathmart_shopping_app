@@ -52,6 +52,12 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/protractor.png
+    - assets/calculator.png
+    - assets/ruler.png
+    - assets/textbook.png
+    - assets/formula_book.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

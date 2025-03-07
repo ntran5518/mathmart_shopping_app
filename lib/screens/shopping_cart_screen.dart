@@ -44,7 +44,7 @@ class ShoppingCartScreenState extends State<ShoppingCartScreen> {
         // app title
         title: const Text(
           "Shopping Cart",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontSize: 28),
         ),
         centerTitle: true,
         backgroundColor: Colors.teal, // Use a custom background color
@@ -94,15 +94,31 @@ class ShoppingCartScreenState extends State<ShoppingCartScreen> {
 
                   // using the item, populate the row UI
                   return ListTile(
-                      title: Text(currItem.name),
-                      leading: Text("ID: ${currItem.id}"),
-                      subtitle:
-                          Text("Price: \$${currItem.price.toStringAsFixed(2)}"),
-                      // if there are no more items for sale, then show a SOLD OUT text. Otherwise, show a BUY button
-                      trailing: Text(
-                        "Purchased Quantity: ${currItem.quantity}",
-                        style: const TextStyle(fontSize: 15),
-                      ));
+                    leading: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: Image.asset(
+                            currItem.imagePath, // ✅ Use imagePath from cartItems
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          "ID: ${currItem.id}",
+                          style: const TextStyle(fontSize: 16, color: Colors.black),
+                        ),
+                      ],
+                    ),
+                    title: Text(currItem.name, style: const TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold)),
+                    subtitle: Text("Price: \$${currItem.price.toStringAsFixed(2)}",style: const TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),),
+                    trailing: Text(
+                      "Purchased Quantity: ${currItem.quantity}",
+                      style: const TextStyle(fontSize: 16, color: Colors.green, fontWeight: FontWeight.bold),
+                    ),
+                  );
                 },
               )),
               // check if cart is empty - if so, output message to go shopping!
@@ -129,7 +145,7 @@ class ShoppingCartScreenState extends State<ShoppingCartScreen> {
                       child: OutlinedButton(
                           onPressed: () {
                             Navigator.push(
-                                // stack naviagtion
+                                // stack navigation
                                 context, MaterialPageRoute(builder: (context) {
                               // Navigate to customer info screen to get customer details for purchase
                               return CustomerInfoScreen(

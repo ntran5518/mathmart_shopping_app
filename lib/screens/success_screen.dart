@@ -17,7 +17,7 @@ import 'catalog_screen.dart';
 // Classes
 import '../classes/item.dart'; // Item class import to make Item objects
 
-/// returns 'Yes' or 'No rather than true or false to print a boolean result nicely. Method author: Ana Isakov
+
 String returnYesNo(bool result) {
   // takes a bool, returns a string
   if (result) {
@@ -194,6 +194,7 @@ class SuccessScreen extends StatelessWidget {
                         'Item: ${item.name}, Qty: ${item.quantity}, Price: \$${item.price.toStringAsFixed(2)}',
                         style:
                             const TextStyle(fontSize: 18, color: Colors.black),
+
                       )),
                   const Divider(
                       height: 30,

@@ -50,7 +50,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
       appBar: AppBar(
         title: const Text(
           "WELCOME!",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontSize: 28),
         ),
         centerTitle: true,
         backgroundColor: Colors.teal, // Use a custom background color
@@ -69,23 +69,23 @@ class WelcomeScreenState extends State<WelcomeScreen> {
               ),
               child: Text(
                 emoji,
-                style: const TextStyle(fontSize: 100),
+                style: const TextStyle(fontSize: 200),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 40),
             // Website tagline
             const Text(
-              "MathMart Shopping App!",
-              style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
+              "MathMart Shopping App",
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 25),
             // Website description
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
                 "A Shopping App for Math Tools \nlike Calculators, Rulers, and Books.",
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 25),
                 textAlign: TextAlign.center,
               ),
             ),

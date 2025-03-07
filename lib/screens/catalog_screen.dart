@@ -17,22 +17,24 @@ import '../classes/item.dart'; // Import Item class to create instances of a pro
 // Using the Item class, create a list of items for the ListView
 // List of original items (item info & initial stock)
 List<Item> originalItemStock = [
-  Item(id: 1, name: "Protractor", quantity: 5, price: 1.99),
-  Item(id: 2, name: "Calculator", quantity: 4, price: 15.00),
-  Item(id: 3, name: "Ruler", quantity: 7, price: 2.99),
-  Item(id: 4, name: "Textbook", quantity: 2, price: 39.99),
-  Item(id: 5, name: "Formula Book", quantity: 5, price: 12.99),
+  Item(id: 1, name: "Protractor", quantity: 5, price: 1.99, imagePath: "assets/protractor.png"),
+  Item(id: 2, name: "Calculator", quantity: 4, price: 15.00, imagePath: "assets/calculator.png"),
+  Item(id: 3, name: "Ruler", quantity: 7, price: 2.99, imagePath: "assets/ruler.png"),
+  Item(id: 4, name: "Textbook", quantity: 2, price: 39.99, imagePath: "assets/textbook.png"),
+  Item(id: 5, name: "Formula Book", quantity: 5, price: 12.99, imagePath: "assets/formula_book.png"),
 ];
+
 List<int> originalItemStockQuantities = [5, 4, 7, 2, 5];
 
 // List of current items (with updated quantities)
 List<Item> currentStatusItems = [
-  Item(id: 1, name: "Protractor", quantity: 5, price: 1.99),
-  Item(id: 2, name: "Calculator", quantity: 4, price: 15.00),
-  Item(id: 3, name: "Ruler", quantity: 7, price: 2.99),
-  Item(id: 4, name: "Textbook", quantity: 2, price: 39.99),
-  Item(id: 5, name: "Formula Book", quantity: 5, price: 12.99),
-]; // set to original stock originally
+  Item(id: 1, name: "Protractor", quantity: 5, price: 1.99, imagePath: "assets/protractor.png"),
+  Item(id: 2, name: "Calculator", quantity: 4, price: 15.00, imagePath: "assets/calculator.png"),
+  Item(id: 3, name: "Ruler", quantity: 7, price: 2.99, imagePath: "assets/ruler.png"),
+  Item(id: 4, name: "Textbook", quantity: 2, price: 39.99, imagePath: "assets/textbook.png"),
+  Item(id: 5, name: "Formula Book", quantity: 5, price: 12.99, imagePath: "assets/formula_book.png"),
+];
+
 
 List<int> currentItemStockQuantities = [
   5,
@@ -68,11 +70,11 @@ class CatalogScreenState extends State<CatalogScreen> {
       // update book list with default list of items
       currentStatusItems.addAll([
         // original stock
-        Item(id: 1, name: "Protractor", quantity: 5, price: 1.99),
-        Item(id: 2, name: "Calculator", quantity: 4, price: 15.00),
-        Item(id: 3, name: "Ruler", quantity: 7, price: 2.99),
-        Item(id: 4, name: "Textbook", quantity: 2, price: 39.99),
-        Item(id: 5, name: "Formula Book", quantity: 5, price: 12.99),
+        Item(id: 1, name: "Protractor", quantity: 5, price: 1.99, imagePath: "assets/protractor.png"),
+        Item(id: 2, name: "Calculator", quantity: 4, price: 15.00, imagePath: "assets/calculator.png"),
+        Item(id: 3, name: "Ruler", quantity: 7, price: 2.99, imagePath: "assets/ruler.png"),
+        Item(id: 4, name: "Textbook", quantity: 2, price: 39.99, imagePath: "assets/textbook.png"),
+        Item(id: 5, name: "Formula Book", quantity: 5, price: 12.99, imagePath: "assets/formula_book.png"),
       ]);
 
       // Reset current stock quantities as well
@@ -86,32 +88,31 @@ class CatalogScreenState extends State<CatalogScreen> {
 
   /// On-click method when customer buys an item
   void buyPressed(Item selectedItem) {
-    // set the state
     setState(() {
       if (selectedItem.quantity > 0) {
-        // decrease quantity of selected book
         selectedItem.quantity -= 1;
-        // increase total number of purchased items
         totalItemQty += 1;
-        // update total cost of items in cart
         totalCost += selectedItem.price;
       }
-      // store index of selected item
-      int selectedIndex = selectedItem.id - 1; // index is 1 less than id
 
-      // update the stock
+      int selectedIndex = selectedItem.id - 1;
       currentStatusItems[selectedIndex].quantity = selectedItem.quantity;
-      // update the stock quantity
       currentItemStockQuantities[selectedIndex] = selectedItem.quantity;
 
-      // update the cart
-      if (cartItems.contains(selectedItem)) {
-        // if this item already is in the cart
-        cartItems.remove(selectedItem); // remove it
-      }
-      cartItems.add(selectedItem); // Add the item with the correct quantity
+      // Remove old entry if item already exists in cart
+      cartItems.removeWhere((item) => item.id == selectedItem.id);
+
+      // ✅ Fix: Add the item with imagePath to cartItems
+      cartItems.add(Item(
+        id: selectedItem.id,
+        name: selectedItem.name,
+        quantity: selectedItem.quantity,
+        price: selectedItem.price,
+        imagePath: selectedItem.imagePath, // ✅ Ensure imagePath is included
+      ));
     });
   }
+
 
   // override the build method
   @override
@@ -121,7 +122,7 @@ class CatalogScreenState extends State<CatalogScreen> {
           // app title
           title: const Text(
             "Product List",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white,fontSize: 28),
           ),
           centerTitle: true,
           backgroundColor: Colors.teal, // Use a custom background color
@@ -139,7 +140,7 @@ class CatalogScreenState extends State<CatalogScreen> {
                         foregroundColor: Colors.black, // Text color
                         side: const BorderSide(
                             color: Colors.black,
-                            width: 1), // Border color and thickness
+                            width: 5), // Border color and thickness
                       ),
                       child: const Row(
                         // row widget for nice formatting of elements on button
@@ -148,11 +149,15 @@ class CatalogScreenState extends State<CatalogScreen> {
                         children: [
                           // both icon and text on button for user to reach shopping cart
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 5),
-                            child: Text("Reset Items"),
+                            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                            child: Text("Reset Items",
+                              style: TextStyle(fontSize: 25, color: Colors.black),),
                           ),
                         ],
                       )),
+
+                  const SizedBox(height: 15), // Adjust this value
+
                   // reset button to empty cart & refill stock
                   Expanded(
                       child: ListView.builder(
@@ -166,27 +171,71 @@ class CatalogScreenState extends State<CatalogScreen> {
                             // get the item associated with the current row
                             Item currItem = currentStatusItems[index];
                             // using the item, populate the row ui
+
                             return ListTile(
-                              title: Text(
-                                  "${currItem.name} - \$${currItem.price}"),
-                              leading: Text("ID: ${currItem.id.toString()}"),
-                              subtitle: Text("Quantity: ${currItem.quantity}"),
-                              // If there are no items in stock, then show a SOLD OUT text; otherwise, show a BUY button
-                              trailing: (currItem.quantity == 0)
-                                  ? const Text(
-                                      "SOLD OUT",
-                                      style: TextStyle(fontSize: 14),
-                                    )
-                                  : FilledButton(
-                                      onPressed: () {
-                                        buyPressed(
-                                            currItem); // place selected item in the cart on button press
-                                      },
-                                      style: FilledButton.styleFrom(
-                                        backgroundColor: Colors
-                                            .blueGrey, // Set the background color
+                              leading: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: Image.asset(
+                                      currItem.imagePath,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8), // Add spacing between image and ID text
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start, // ✅ Ensures ID aligns with text
+                                    children: [
+                                      Text(
+                                        "ID${currItem.id.toString().padLeft(2, '0')}",
+                                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                                       ),
-                                      child: const Text("Add to cart")),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              title: Row(
+                                children: [
+                                  Expanded( // ✅ Expands text to push button to the right
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "${currItem.name} - \$${currItem.price.toStringAsFixed(2)}",
+                                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+                                        ),
+                                        Text(
+                                          "Quantity: ${currItem.quantity}",
+                                          style: const TextStyle(fontSize: 16, color: Colors.black),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  // ✅ Aligns the button to the right
+                                  (currItem.quantity == 0)
+                                      ? const Text(
+                                    "SOLD OUT",
+                                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red),
+                                  )
+                                      : FilledButton(
+                                    onPressed: () {
+                                      buyPressed(currItem);
+                                    },
+                                    style: FilledButton.styleFrom(
+                                      backgroundColor: Colors.blueGrey,
+                                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                    ),
+                                    child: const Text(
+                                      "Add to Cart",
+                                      style: TextStyle(fontSize: 16, color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
+
                               onTap: () {
                                 // When user taps the list item, navigate to its respective details page
                                 Navigator.push(
@@ -198,6 +247,7 @@ class CatalogScreenState extends State<CatalogScreen> {
                                     productName: currItem.name,
                                     stockQuantity: currItem.quantity,
                                     productPrice: currItem.price,
+                                    imagePath: currItem.imagePath,
                                   );
                                 }));
                               },
@@ -218,7 +268,7 @@ class CatalogScreenState extends State<CatalogScreen> {
                         foregroundColor: Colors.black, // Text color
                         side: const BorderSide(
                             color: Colors.black,
-                            width: 1), // Border color and thickness
+                            width: 4), // Border color and thickness
                       ),
                       child: const Row(
                         // row widget for nice formatting of elements on button
@@ -227,8 +277,8 @@ class CatalogScreenState extends State<CatalogScreen> {
                         children: [
                           // both icon and text on button for user to reach shopping cart
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 5),
-                            child: Text("Go to Cart"),
+                            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                            child: Text("Go to Cart",style: TextStyle(fontSize: 25, color: Colors.black),),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 5),
